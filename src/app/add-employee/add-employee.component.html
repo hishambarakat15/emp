@@ -1,0 +1,135 @@
+<ul class="nav nav-tabs m-0" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="add" aria-selected="true">Add Employee</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" id="search-tab" data-toggle="tab" href="#search" role="tab" aria-controls="profile" aria-selected="false">Search Employee</a>
+    </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="add" role="tabpanel" aria-labelledby="add-tab">
+        <div class="container-fluid">
+            <form #f="ngForm"   >
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="Name">Employee Name</label>
+                        <input type="text" required class="form-control" id="Name" name="empName" ngModel #empName="ngModel">
+                       <!-- Start Validation-->
+                        <div *ngIf="empName.touched &&empName.invalid" class="alert alert-danger">
+                           <div *ngIf="empName.errors?.required">THis Field  required</div>
+                       </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="dep">Department</label>
+                        <select id="dep" name="dep" ngModel #dep="ngModel"  required  class="form-control">
+                            <option *ngFor="let depart of departments" [value]="depart">{{depart}}</option>
+                        </select>
+                        <!-- Start Validation-->
+                        <div *ngIf="dep.touched &&dep.invalid" class="alert alert-danger">
+                            <div *ngIf="dep.errors?.required">THis Field  required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="empCode">Employee code</label>
+                        <input type="text" class="form-control"required [min]="0" id="empCode" name="empCode" ngModel #empCode="ngModel" >
+                        <!-- Start Validation-->
+                        <div *ngIf="empCode.touched &&empCode.invalid" class="alert alert-danger">
+                            <div *ngIf="empCode.errors?.required">THis Field  required</div>
+                            <div *ngIf="empCode.errors?.min">THis Field accepts positive numbers only</div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="birthday">Birthday</label>
+                        <input type="date" class="form-control" required id="birthday" name="birthday" ngModel #birthday="ngModel">
+                        <!-- Start Validation-->
+                        <div *ngIf="birthday.touched &&birthday.invalid" class="alert alert-danger">
+                            <div *ngIf="birthday.errors?.required">THis Field  required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-check form-check-inline col-md-2">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions"  gender="dep" ngModel #gender="ngModel" id="inlineRadio1" value="Male">
+                        <label class="form-check-label" for="inlineRadio1">Male</label>
+                    </div>
+                    <div class="form-check form-check-inline col-md-2">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" gender="dep" ngModel #gender="ngModel" id="inlineRadio2" value="Female">
+                        <label class="form-check-label" for="inlineRadio2">Female</label>
+                    </div>
+                    <div class="offset-2 col-md-2">
+                        <button class="btn btn-secondary btn-block" (click)="AddNewEmp(f)" [disabled]="f.invalid"> Add </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <div class="tab-pane fade" id="search" role="tabpanel" aria-labelledby="search-tab">
+        <!-- Start search Content -->
+        <div class="container-fluid">
+            <form #search="ngForm"   >
+                <div class="form-row d-flex align-items-end">
+                    <div class="form-group col-md-4">
+                        <label for="nameS">Employee Name</label>
+                        <input type="text" required class="form-control" id="nameS" name="empNameS" ngModel #empNameS="ngModel">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="depS">Department</label>
+                        <select id="depS" name="depS" ngModel #depS="ngModel"  required  class="form-control">
+                            <option *ngFor="let depart of departments" [value]="depart">{{depart}}</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <button class="btn btn-secondary btn-block" (click)="searchClick(search.value)">Search </button>
+                    </div>
+
+                </div>
+                <!-- Start validation Search Form -->
+                <div *ngIf="empNameS.touched &&empNameS.invalid" class="alert alert-danger">
+                    <div *ngIf="empNameS.errors?.required">THis Field  required</div>
+                </div>
+                <div *ngIf="depS.touched &&depS.invalid" class="alert alert-danger">
+                    <div *ngIf="depS.errors?.required">THis Field required</div>
+                </div>
+
+            </form>
+            <!-- Start data Table-->
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Employee Name</th>
+                    <th scope="col">Employee Code</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Date of Birth</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr *ngFor="let employee of filterEmp">
+                    <th scope="row">
+                        <div class="form-group form-check">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        </div>
+                    </th>
+                    <td>{{employee.empName}}</td>
+                    <td>{{employee.dep}}</td>
+                    <td>{{employee.empCode}}</td>
+                    <td>{{employee.birthday}}</td>
+                </tr>
+
+
+
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
